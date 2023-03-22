@@ -1,6 +1,10 @@
 defmodule Outlet.Router do
   use Plug.Router
 
+  alias Outlet.Plug.VerifyRequest
+
+  plug(Plug.Parsers, parsers: [:urlencoded, :multipart])
+  plug(VerifyRequest, fields: ["content", "mimetype"], paths: ["/upload"])
   plug(Plug.Logger)
   plug(:match)
   plug(:dispatch)
@@ -11,6 +15,10 @@ defmodule Outlet.Router do
 
   get "/ping" do
     send_resp(conn, 200, "pong")
+  end
+
+  get "/upload" do
+    send_resp(conn, 201, "Uploaded")
   end
 
   match _ do
