@@ -1,19 +1,16 @@
 defmodule Outlet.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
+  require Logger
 
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Outlet.Worker.start_link(arg)
-      # {Outlet.Worker, arg}
+      {Bandit, plug: Outlet.Router, scheme: :http, options: [port: 4000]}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    Logger.info("Outlet running on http://localhost:4000")
     opts = [strategy: :one_for_one, name: Outlet.Supervisor]
     Supervisor.start_link(children, opts)
   end
