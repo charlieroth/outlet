@@ -21,7 +21,8 @@ defmodule Outlet.MixProject do
   defp deps do
     [
       {:plug, "~> 1.14"},
-      {:bandit, "~> 0.7.3"}
+      {:bandit, "~> 0.7.3"},
+      {:jason, "~> 1.4"}
     ]
   end
 end
