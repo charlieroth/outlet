@@ -22,7 +22,9 @@ defmodule Outlet.MixProject do
     [
       {:plug, "~> 1.14"},
       {:bandit, "~> 0.7.3"},
-      {:jason, "~> 1.4"}
+      {:jason, "~> 1.4"},
+      {:ecto_sqlite3, "~> 0.9.1"},
+      {:litestream, "~> 0.3.0"}
     ]
   end
 end
