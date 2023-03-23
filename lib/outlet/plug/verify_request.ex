@@ -1,6 +1,6 @@
 defmodule Outlet.Plug.VerifyRequest do
   defmodule IncompleteRequestError do
-    defexception message: ""
+    defexception message: "", plug_status: 400
   end
 
   def init(opts), do: opts
