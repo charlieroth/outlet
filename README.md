@@ -1,3 +1,3 @@
 # Outlet
 
-Following along with https://elixirschool.com/en/lessons/misc/plug
+A place for backend service related experiments
