@@ -9,7 +9,8 @@ defmodule Outlet.Application do
     port = bandit_port()
 
     children = [
-      {Bandit, plug: Outlet.Router, scheme: :http, options: [port: port]}
+      {Bandit, plug: Outlet.Router, scheme: :http, options: [port: port]},
+      Outlet.Accounts.Repo
     ]
 
     Logger.info("Starting application...")

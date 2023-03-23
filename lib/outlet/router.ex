@@ -4,6 +4,7 @@ defmodule Outlet.Router do
   use Plug.Debugger
 
   alias Outlet.Plug.VerifyRequest
+  alias Outlet.Accounts
 
   plug(:match)
 
@@ -45,6 +46,49 @@ defmodule Outlet.Router do
 
       _ ->
         send_resp(conn, 200, "Posted")
+    end
+  end
+
+  post "/user" do
+    case conn.body_params do
+      %{"name" => _name, "age" => _age} = user ->
+        resp =
+          user
+          |> Accounts.create_user()
+          |> Jason.encode!()
+
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, resp)
+
+      _ ->
+        conn
+        |> send_resp(422, "Unable To Create User")
+    end
+  end
+
+  get "/user" do
+    users = Accounts.list_users()
+    resp = Jason.encode!(users)
+
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, resp)
+  end
+
+  get "/user/:id" do
+    user = id |> Accounts.get_user()
+
+    case user do
+      nil ->
+        conn |> send_resp(400, "User Not Found")
+
+      _user ->
+        resp = user |> Jason.encode!()
+
+        conn
+        |> put_resp_content_type("application/type")
+        |> send_resp(201, resp)
     end
   end
 
