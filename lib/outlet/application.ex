@@ -6,12 +6,18 @@ defmodule Outlet.Application do
 
   @impl true
   def start(_type, _args) do
+    port = bandit_port()
+
     children = [
-      {Bandit, plug: Outlet.Router, scheme: :http, options: [port: 4000]}
+      {Bandit, plug: Outlet.Router, scheme: :http, options: [port: port]}
     ]
 
-    Logger.info("Outlet running on http://localhost:4000")
+    Logger.info("Starting application...")
     opts = [strategy: :one_for_one, name: Outlet.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp bandit_port do
+    Application.get_env(:outlet, :bandit_port)
   end
 end
