@@ -24,7 +24,8 @@ defmodule Outlet.MixProject do
       {:bandit, "~> 0.7.3"},
       {:jason, "~> 1.4"},
       {:ecto_sqlite3, "~> 0.9.1"},
-      {:litestream, "~> 0.3.0"}
+      {:litestream, "~> 0.3.0"},
+      {:uuid, "~> 1.1"}
     ]
   end
 end
