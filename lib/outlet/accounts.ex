@@ -1,17 +1,25 @@
 defmodule Outlet.Accounts do
+  alias Outlet.Repo
+  alias Outlet.Accounts.User
+
   def list_users() do
-    GenServer.call(Repo, {:list, :users})
+    Repo.all(User, [])
   end
 
   def get_user(id) do
-    GenServer.call(Repo, {:get, :users, id})
+    Repo.get!(User, id)
   end
 
   def create_user(%{"name" => _name, "age" => _age} = user) do
-    GenServer.call(Repo, {:create, :users, user})
+    user_with_id = Map.put(user, "id", UUID.uuid4())
+
+    %User{}
+    |> User.changeset(user_with_id)
+    |> Repo.insert!()
   end
 
   def remove_user(id) do
-    GenServer.cast(Repo, {:remove, :users, id})
+    user = Repo.get!(User, id)
+    Repo.delete!(user)
   end
 end

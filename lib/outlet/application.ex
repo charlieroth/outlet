@@ -10,7 +10,7 @@ defmodule Outlet.Application do
 
     children = [
       {Bandit, plug: Outlet.Router, scheme: :http, options: [port: port]},
-      Outlet.Accounts.Repo
+      Outlet.Repo
     ]
 
     Logger.info("Starting application...")
@@ -18,7 +18,5 @@ defmodule Outlet.Application do
     Supervisor.start_link(children, opts)
   end
 
-  defp bandit_port do
-    Application.get_env(:outlet, :bandit_port)
-  end
+  defp bandit_port, do: 4000
 end
