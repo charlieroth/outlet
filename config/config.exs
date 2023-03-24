@@ -1,5 +1,12 @@
 import Config
 
-config :outlet, bandit_port: 4000
+config :outlet,
+  ecto_repos: [Outlet.Repo]
 
-config :logger, :console, metadata: [:request_id]
+config :outlet,
+       Outlet.Repo,
+       database: "outlet.db"
+
+config :logger,
+       :console,
+       metadata: [:request_id]
