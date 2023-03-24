@@ -14,4 +14,13 @@ defmodule Outlet.Accounts.User do
     |> cast(attrs, [:name, :age])
     |> validate_required([:name, :age])
   end
+
+  def to_json(user) do
+    %{
+      id: user.id,
+      name: user.name,
+      age: user.age
+    }
+    |> Jason.encode!()
+  end
 end

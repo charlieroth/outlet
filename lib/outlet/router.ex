@@ -18,10 +18,6 @@ defmodule Outlet.Router do
   plug(Plug.Logger)
   plug(:dispatch)
 
-  get "/" do
-    send_resp(conn, 200, "Hello World!")
-  end
-
   get "/ping" do
     send_resp(conn, 200, "pong")
   end
@@ -30,50 +26,22 @@ defmodule Outlet.Router do
     send_resp(conn, 201, "Uploaded")
   end
 
-  get "/parse-me" do
-    IO.inspect(conn.params, label: "Request URL Parameters")
-    send_resp(conn, 200, "Parsed")
-  end
-
-  post "/echo" do
-    case conn.body_params do
-      %{"msg" => msg} ->
-        resp = Jason.encode!(%{"msg" => msg})
-
-        conn
-        |> put_resp_content_type("application/json")
-        |> send_resp(200, resp)
-
-      _ ->
-        send_resp(conn, 200, "Posted")
-    end
-  end
-
   post "/user" do
     case conn.body_params do
       %{"name" => _name, "age" => _age} = user ->
-        resp =
+        json =
           user
           |> Accounts.create_user()
-          |> Jason.encode!()
+          |> Accounts.User.to_json()
 
         conn
         |> put_resp_content_type("application/json")
-        |> send_resp(200, resp)
+        |> send_resp(200, json)
 
       _ ->
         conn
         |> send_resp(422, "Unable To Create User")
     end
-  end
-
-  get "/user" do
-    users = Accounts.list_users()
-    resp = Jason.encode!(users)
-
-    conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, resp)
   end
 
   get "/user/:id" do
@@ -84,11 +52,11 @@ defmodule Outlet.Router do
         conn |> send_resp(400, "User Not Found")
 
       _user ->
-        resp = user |> Jason.encode!()
+        json = Accounts.User.to_json(user)
 
         conn
-        |> put_resp_content_type("application/type")
-        |> send_resp(201, resp)
+        |> put_resp_content_type("application/json")
+        |> send_resp(201, json)
     end
   end
 
