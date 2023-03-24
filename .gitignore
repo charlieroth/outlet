@@ -26,3 +26,6 @@ outlet-*.tar
 /tmp/
 
 .elixir_ls
+
+*.db
+*.db-*
