@@ -10,8 +10,8 @@ defmodule Outlet.Accounts do
     Repo.get!(User, id)
   end
 
-  def create_user(%{"name" => _name, "age" => _age} = user) do
-    user_with_id = Map.put(user, "id", UUID.uuid4())
+  def create_user(%{name: _name, age: _age} = user) do
+    user_with_id = Map.put(user, :id, UUID.uuid4())
 
     %User{}
     |> User.changeset(user_with_id)

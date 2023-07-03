@@ -1,12 +1,14 @@
 defmodule Outlet.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Outlet.Posts.Post
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
   schema "users" do
     field(:name, :string)
     field(:age, :integer)
+    has_many(:posts, Post)
   end
 
   def changeset(user, attrs \\ %{}) do
