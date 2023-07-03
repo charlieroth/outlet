@@ -1,6 +1,30 @@
 defmodule Outlet.Accounts do
+  import Ecto.Query
   alias Outlet.Repo
   alias Outlet.Accounts.User
+  alias Outlet.Accounts.Followers
+
+  def follow_author(user_id, user_id_to_follow) do
+    if already_follows?(user_id, user_id_to_follow) do
+      {:error, :already_following}
+    else
+      %Followers{}
+      |> Followers.changeset(%{follower: user_id, followed: user_id_to_follow})
+      |> Repo.insert()
+    end
+  end
+
+  def already_follows?(user_id, user_id_to_follow) do
+    case Repo.all(Followers, follower: user_id) do
+      [] ->
+        false
+
+      users_following ->
+        Enum.any?(users_following, fn user_following ->
+          user_following.followed == user_id_to_follow
+        end)
+    end
+  end
 
   def list_users() do
     Repo.all(User, [])
